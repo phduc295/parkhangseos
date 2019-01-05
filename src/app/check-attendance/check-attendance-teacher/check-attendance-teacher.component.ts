@@ -1,7 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { AppService, AttendanceService, AuthService, SocketService, AppConfig, CheckAttendanceService, StudentService } from '../../shared/shared.module';
+import {
+    AppService,
+    AttendanceService,
+    AuthService,
+    SocketService,
+    AppConfig,
+    CheckAttendanceService,
+    StudentService
+} from '../../shared/shared.module';
 import { LocalStorageService } from 'angular-2-local-storage';
+import * as jspdf from 'jspdf';
+import html2canvas from 'html2canvas';
+  
 declare var jQuery:any;
 @Component({
     selector: 'check-attendance-teacher',
@@ -24,8 +35,8 @@ export class CheckAttendanceTeacherComponent implements OnInit, OnDestroy {
         });
         socketService.consumeEventOnCheckAttendanceStopped();
         socketService.invokeCheckAttendanceStopped.subscribe(result=>{
-            if(this.selected_course_id == result['course_id'] && this.selected_class_id == result['class_id']){
-                this.stopped_modal_message = "Session is " + result['message'];
+            if (this.selected_course_id === result['course_id'] && this.selected_class_id === result['class_id']) {
+                this.stopped_modal_message = 'Session is ' + result['message'];
                 jQuery('#sessionStoppedModal').modal({backdrop: 'static', keyboard: false}) ;
             }
         });
@@ -345,5 +356,26 @@ export class CheckAttendanceTeacherComponent implements OnInit, OnDestroy {
                 this.appService.showPNotify('success',"Successfully update student interaction!",'success');
             }
         },error=>{this.appService.showPNotify('failure',"Server Error! Can't update student interaction",'error');});
+    }
+
+    /**
+     * generate attendance sheet
+     * return an attendance sheet
+     */
+    public generateAttendanceSheet() {
+        const data = document.getElementById('contentToConvert');
+        html2canvas(data).then( canvas => {
+            const pdf = new jspdf('l', 'mm', 'a4'); // A4 landscape size page of PDF
+            const imgWidth = pdf.internal.pageSize.getWidth() - 30;
+            const imgHeight = canvas.height * imgWidth / canvas.width;
+            const contentDataURL = canvas.toDataURL('image/png;base64');
+            pdf.text(35, 25, 'Attendance Sheet');
+            pdf.rect(10, 30, 5, 5, 'F');
+            pdf.rect(280, 30, 5, 5, 'F');
+            pdf.rect(280, 195, 5, 5, 'F');
+            pdf.rect(10, 195, 5, 5, 'F');
+            pdf.addImage(contentDataURL, 'PNG', 15, 40, imgWidth, imgHeight);
+            pdf.save('Attendance Sheet.pdf'); // Generated PDF
+        });
     }
 }

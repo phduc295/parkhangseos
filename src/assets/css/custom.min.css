@@ -5046,9 +5046,6 @@ table td {
     overflow-y: auto;
     overflow-x: hidden;
 }
-.gray_background{
-    background: #ededed;
-}
 .warning_background{
     background: #f0ad4a;
 }
