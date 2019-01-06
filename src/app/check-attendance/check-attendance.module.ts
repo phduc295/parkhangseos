@@ -1,6 +1,6 @@
-import { NgModule }       from '@angular/core';
-import { CommonModule }   from '@angular/common';
-import { FormsModule }    from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 
 import { CollapseModule } from 'ngx-bootstrap';
@@ -10,8 +10,8 @@ import { CheckAttendanceStudentComponent } from './check-attendance-student/chec
 import { TooltipModule } from 'ngx-bootstrap';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { TabsModule } from 'ngx-bootstrap/tabs';
-import {FileUploadModule} from "ng2-file-upload";
 import { SharedModule } from '../shared/shared.module';
+import { NgxBarcodeModule } from 'ngx-barcode';
 const Routes: Routes = [
   { path: '',  component: CheckAttendanceComponent },
 ];
@@ -20,6 +20,7 @@ const Routes: Routes = [
   imports: [
     CommonModule,
     FormsModule,
+    NgxBarcodeModule,
     RouterModule.forChild(Routes),
     CollapseModule.forRoot(),
     TooltipModule.forRoot(),

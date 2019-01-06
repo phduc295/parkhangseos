@@ -151,7 +151,7 @@ export class CheckAttendanceTeacherComponent implements OnInit, OnDestroy {
                     case this.appService.attendance_type.permited_absent:
                         this.check_attendance_list[i].attendance_details[j]['icon'] = 'fa-envelope-square';
                         this.check_attendance_list[i].attendance_details[j]['method'] = 'Permited Absent';
-                        break;        
+                        break;
                     default:
                         this.check_attendance_list[i].attendance_details[j]['icon'] = '';
                         this.check_attendance_list[i].attendance_details[j]['method'] = 'Absent';
@@ -365,16 +365,21 @@ export class CheckAttendanceTeacherComponent implements OnInit, OnDestroy {
     public generateAttendanceSheet() {
         const data = document.getElementById('contentToConvert');
         html2canvas(data).then( canvas => {
-            const pdf = new jspdf('l', 'mm', 'a4'); // A4 landscape size page of PDF
-            const imgWidth = pdf.internal.pageSize.getWidth() - 30;
+            const pdf = new jspdf('landscape'); // A4 landscape size page of PDF
+            const imgWidth = 261;
             const imgHeight = canvas.height * imgWidth / canvas.width;
+            console.log(canvas.width);
+            console.log(imgHeight);
             const contentDataURL = canvas.toDataURL('image/png;base64');
+            const pageNum = pdf.internal.getNumberOfPages();
+            pdf.rect(10, 10, 5, 5, 'F');
+            pdf.rect(280, 10, 5, 5, 'F');
             pdf.text(35, 25, 'Attendance Sheet');
-            pdf.rect(10, 30, 5, 5, 'F');
-            pdf.rect(280, 30, 5, 5, 'F');
+            pdf.addImage(contentDataURL, 'PNG', 18 , 40, imgWidth, imgHeight);
             pdf.rect(280, 195, 5, 5, 'F');
             pdf.rect(10, 195, 5, 5, 'F');
-            pdf.addImage(contentDataURL, 'PNG', 15, 40, imgWidth, imgHeight);
+            pdf.setFontSize(12);
+            pdf.text(135, 200, 'Page ' + pageNum + '.');
             pdf.save('Attendance Sheet.pdf'); // Generated PDF
         });
     }

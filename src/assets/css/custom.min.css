@@ -5151,3 +5151,27 @@ table td {
     width: 150px;
     height: 120px;
 }
+.barcode{
+    text-align: right;
+    padding: 10px;
+
+}
+
+.table{
+    display: table;
+    color: black !important;
+    border: 1px solid black !important;
+    width: 99%;
+    margin: 0 auto;
+}
+.table tr td{
+    border: 1px solid black !important;
+    height: 30px !important;
+    padding: 0 !important;
+}
+.table tr th{
+    border: 1px solid black !important;
+}
+#contentToConvert{
+    padding: 2px;
+}
