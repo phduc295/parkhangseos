@@ -1,4 +1,4 @@
 export class AppConfig {
-    public apiHost = "https://parkhangseo.herokuapp.com/api";
-    public host = "https://parkhangseo.herokuapp.com";
+    public apiHost = "https://parkhangseos.herokuapp.com/api";
+    public host = "https://parkhangseos.herokuapp.com";
 }
